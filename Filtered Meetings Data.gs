@@ -1,13 +1,17 @@
 function fetchAndPopulateMeetings() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   sheet.clear();
-  sheet.getRange(1, 1).setValue('Meeting Name');
-  sheet.getRange(1, 2).setValue('Meeting Type');
-  sheet.getRange(1, 3).setValue('Meeting Assigned To');
+  sheet.getRange(1, 1).setValue('Name');
+  sheet.getRange(1, 2).setValue('Type');
+  sheet.getRange(1, 3).setValue('Assigned To');
+  sheet.getRange(1, 4).setValue('Start Date');
+  sheet.getRange(1, 5).setValue('Start Time');
+  sheet.getRange(1, 6).setValue('End Date');
+  sheet.getRange(1, 7).setValue('End Time');
   sheet.getRange('1:1').setFontWeight('bold');
   sheet.setFrozenRows(1);
   Logger.log('Headers of the sheet has been set and added!');
-  var url = 'https://api.hubapi.com/crm/v3/objects/meetings?limit=100&properties=hs_meeting_title,hs_activity_type,hubspot_owner_id,hs_meeting_outcome,hs_timestamp';
+  var url = 'https://api.hubapi.com/crm/v3/objects/meetings?limit=100&properties=hs_meeting_title,hs_activity_type,hubspot_owner_id,hs_meeting_outcome,hs_timestamp,hs_meeting_start_time,hs_meeting_end_time';
   var options = {
     'method': 'get',
     'headers': {
@@ -45,8 +49,20 @@ function fetchAndPopulateMeetings() {
         };
         var response1 = UrlFetchApp.fetch(url1, options);
         var data1 = JSON.parse(response1.getContentText());
-        var owner = data1.firstName + " " + data1.lastName
+        var owner = data1.firstName + " " + data1.lastName;
         sheet.getRange(row, 3).setValue(owner);
+        sdate = meeting.hs_meeting_start_time;
+        finalSDate = sdate.split('T');
+        sheet.getRange(row, 4).setValue(finalSDate[0]);
+        finalSTime = finalSDate[1].split(':');
+        finalUSTime = finalSTime[0] + ':' + finalSTime[1];
+        sheet.getRange(row, 5).setValue(finalUSTime);
+        edate = meeting.hs_meeting_end_time;
+        finalEDate = edate.split('T');
+        sheet.getRange(row, 6).setValue(finalEDate[0]);
+        finalETime = finalEDate[1].split(':');
+        finalUETime = finalETime[0] + ':' + finalETime[1];
+        sheet.getRange(row, 7).setValue(finalUETime);
         row++;
       }
     }
