@@ -4,6 +4,8 @@ function fetchAndPopulateDeals() {
   sheet.getRange(1, 1).setValue('Deal Amount');
   sheet.getRange(1, 2).setValue('Owner Name');
   sheet.getRange(1, 3).setValue('Has Object Owner');
+  sheet.getRange(1, 4).setValue('Deal Close Date (YYYY-MM-DD)');
+  sheet.getRange(1, 5).setValue('Deal Close Time (HH:MM:SS)');
   sheet.getRange('1:1').setFontWeight('bold');
   sheet.setFrozenRows(1);
   Logger.log('Headers of the sheet has been set and added!');
@@ -48,6 +50,11 @@ function fetchAndPopulateDeals() {
         var owner = data1.firstName + " " + data1.lastName
         sheet.getRange(row, 2).setValue(owner);
         sheet.getRange(row, 3).setValue(deal.hubspot_owner_id ? 'Yes' : 'No');
+        fdate = deal.closedate;
+        finaldate = fdate.split('T');
+        sheet.getRange(row, 4).setValue(finaldate[0]);
+        ftime = finaldate[1].split('.');
+        sheet.getRange(row, 5).setValue(ftime[0]);
         row++;
       }
     }
