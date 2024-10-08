@@ -45,7 +45,8 @@ function fetchAndPopulateMeetings() {
           'method': 'get',
           'headers': {
             'Authorization': 'Bearer Your_Authentication_Token'
-          }
+          },
+          'muteHttpExceptions': true
         };
         var response1 = UrlFetchApp.fetch(url1, options);
         var data1 = JSON.parse(response1.getContentText());
