@@ -1,12 +1,12 @@
 function fetchAndPopulateDeals() {
   var inputs = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Visual');
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Deals');
-  sheet.clear(); // Clear existing content
+  sheet.clear();
   sheet.getRange(1, 1).setValue('Deal Amount');
   sheet.getRange(1, 2).setValue('Account Executive');
   sheet.getRange(1, 3).setValue('Has Object Owner');
-  sheet.getRange(1, 4).setValue('Deal Close Date (YYYY-MM-DD)');
-  sheet.getRange(1, 5).setValue('Deal Close Time (HH:MM:SS)');
+  sheet.getRange(1, 4).setValue('Deal Close Date');
+  sheet.getRange(1, 5).setValue('Deal Close Time');
   sheet.getRange(1, 6).setValue('Deal Type');
   sheet.getRange(1, 7).setValue('Pipeline');
   sheet.getRange(1, 8).setValue('Is Closed Won?')
