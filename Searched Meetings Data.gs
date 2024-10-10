@@ -16,8 +16,11 @@ function fetchAndPopulateMeetings() {
   Logger.log('Headers of the sheet have been set and added!');
   var apiKey = 'Your_Authentication_Token';
   var url = 'https://api.hubapi.com/crm/v3/objects/meetings/search';
-  Logger.log(Date(date))
-  var filterDate = new Date(date)
+  var filterDate = new Date(new Date().setDate(new Date().getDate() - 31));
+  var endDate = new Date(new Date().setDate(new Date().getDate() - 1));
+  var filterDateISO = filterDate.toISOString().split('T')[0] + "T00:00:00Z";
+  var endDateISO = endDate.toISOString().split('T')[0] + "T23:59:59Z";
+  Logger.log("Filter from: " + filterDateISO + " to: " + endDateISO);
   var options = {
     'method': 'post',
     'headers': {
@@ -40,10 +43,10 @@ function fetchAndPopulateMeetings() {
                 'Zeni Overview - Events',
                 'Zeni Overview - Events Booth',
                 'Zeni Overview - VC Referral',
-                'Zeni Overview - Partnerships',
                 'Zeni Overview - Customer Referral',
                 'Zeni Overview - Employee Referral',
-                'Zeni Overview - Inbound VC Referral'
+                'Zeni Overview - Inbound VC Referral',
+                'Zeni Overview - Partnerships'
               ]
             },
             {
@@ -52,9 +55,14 @@ function fetchAndPopulateMeetings() {
               "value": "COMPLETED"
             },
             {
-              "propertyName": "hs_timestamp",
-              "operator": "GT",
-              "value": filterDate
+              "propertyName": "hs_meeting_start_time",
+              "operator": "GTE",
+              "value": filterDateISO
+            },
+            {
+              "propertyName": "hs_meeting_start_time",
+              "operator": "LTE",
+              "value": endDateISO
             }
           ]
         }
@@ -95,7 +103,6 @@ function fetchAndPopulateMeetings() {
                   'Zeni Overview - Events',
                   'Zeni Overview - Events Booth',
                   'Zeni Overview - VC Referral',
-                  'Zeni Overview - Partnerships',
                   'Zeni Overview - Customer Referral',
                   'Zeni Overview - Employee Referral',
                   'Zeni Overview - Inbound VC Referral'
@@ -107,9 +114,14 @@ function fetchAndPopulateMeetings() {
                 "value": "COMPLETED"
               },
               {
-                "propertyName": "hs_timestamp",
-                "operator": "GT",
-                "value": filterDate
+                "propertyName": "hs_meeting_start_time",
+                "operator": "GTE",
+                "value": filterDateISO
+              },
+              {
+                "propertyName": "hs_meeting_start_time",
+                "operator": "LTE",
+                "value": endDateISO
               }
             ]
           }
